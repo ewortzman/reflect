@@ -8,9 +8,13 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from optparse import OptionParser
 from pprint import pprint, pformat
 
+import time
+
 class RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
+
+        time.sleep(2)
 
         request_path = self.path
 
@@ -24,6 +28,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         print "------ Request End ------\n\n"
 
     def do_POST(self):
+
+        time.sleep(2)
 
         request_path = self.path
 
