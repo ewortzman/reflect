@@ -58,8 +58,8 @@ def convert(data):
     else:
         return data
 
-def main():
-    port = 8081
+def main(options, args):
+    port = int(options.port) or 8081
     print('Listening on localhost:%s' % port)
     server = HTTPServer(('', port), RequestHandler)
     server.serve_forever()
@@ -70,9 +70,10 @@ if __name__ == "__main__":
     parser.usage = ("Creates an http-server that will echo out any GET or POST parameters\n"
             "Run:\n\n"
             "   reflect")
+    parser.add_option('-p','--port', dest='port',help='what port to run on')
     (options, args) = parser.parse_args()
     try:
-        main()
+        main(options, args)
     except KeyboardInterrupt:
         print "Thanks for playing!"
         exit();
