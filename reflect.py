@@ -9,12 +9,13 @@ from optparse import OptionParser
 from pprint import pprint, pformat
 
 import time
+import random
 
 class RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        time.sleep(2)
+        time.sleep(random.random()*2+1)
 
         request_path = self.path
 
@@ -29,7 +30,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
 
-        time.sleep(2)
+        time.sleep(random.random()*2+1)
 
         request_path = self.path
 
