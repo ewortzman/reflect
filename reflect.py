@@ -12,10 +12,11 @@ import time
 import random
 
 class RequestHandler(BaseHTTPRequestHandler):
+    delay = False
 
     def do_GET(self):
-
-        time.sleep(random.random()*2+1)
+        if RequestHandler.delay:
+            time.sleep(random.random()*2+1)
 
         request_path = self.path
 
@@ -30,7 +31,8 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
 
-        time.sleep(random.random()*2+1)
+        if RequestHandler.delay:
+            time.sleep(random.random()*2+1)
 
         request_path = self.path
 
@@ -71,6 +73,8 @@ def convert(data):
 
 def main(options, args):
     port = int(options.port) or 8081
+    if options.delay:
+        RequestHandler.delay = True
     print('Listening on localhost:%s' % port)
     server = HTTPServer(('', port), RequestHandler)
     server.serve_forever()
@@ -81,7 +85,8 @@ if __name__ == "__main__":
     parser.usage = ("Creates an http-server that will echo out any GET or POST parameters\n"
             "Run:\n\n"
             "   reflect")
-    parser.add_option('-p','--port', dest='port',help='what port to run on', default=8080)
+    parser.add_option('-p','--port',dest='port',help='what port to run on',default=8081)
+    parser.add_option('-d','--delay',dest='delay',help='add a delay to the response',action='store_true',default=False)
     (options, args) = parser.parse_args()
     try:
         main(options, args)
