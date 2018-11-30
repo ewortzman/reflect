@@ -6,7 +6,7 @@ import collections
 import json
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from optparse import OptionParser
-from pprint import pprint
+from pprint import pprint, pformat
 
 class RequestHandler(BaseHTTPRequestHandler):
 
@@ -36,9 +36,13 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         print(request_headers)
 
-
-        data = json.loads(self.rfile.read(length))
-        pprint(convert(data))
+        body = self.rfile.read(length)
+        try:
+            data = json.loads(body)
+            data = pformat(convert(data))
+        except Exception as e:
+            data = body
+        print data
         print "-------------------------"
 
         self.send_response(200)
@@ -70,7 +74,7 @@ if __name__ == "__main__":
     parser.usage = ("Creates an http-server that will echo out any GET or POST parameters\n"
             "Run:\n\n"
             "   reflect")
-    parser.add_option('-p','--port', dest='port',help='what port to run on')
+    parser.add_option('-p','--port', dest='port',help='what port to run on', default=8080)
     (options, args) = parser.parse_args()
     try:
         main(options, args)
